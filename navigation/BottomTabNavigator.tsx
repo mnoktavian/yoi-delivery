@@ -1,78 +1,133 @@
-/**
- * Learn more about createBottomTabNavigator:
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
+import { Ionicons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import * as React from "react";
 
-import { Ionicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
-
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import Colors from "../constants/Colors";
+import HomeScreen from "../screens/HomeScreen";
+import ActivityScreen from "../screens/ActivityScreen";
+import NotificationScreen from "../screens/NotificationScreen";
+import AccountScreen from "../screens/AccountScreen";
+import { BottomTabParamList, HomeParamList, ActivityParamList } from "../types";
+import SearchScreen from "../screens/SearchScreen";
+import ServicesSameday from "../screens/services/ServicesSameday";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
-
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      initialRouteName="Home"
+      backBehavior={"initialRoute"}
+      tabBarOptions={{
+        activeTintColor: Colors.tint,
+        tabStyle: { paddingBottom: 5 },
+      }}
+    >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneNavigator}
+        name="Home"
+        component={HomeNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarLabel: "Beranda",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "home" : "home-outline"}
+              color={color}
+            />
+          ),
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
+        name="Activity"
+        component={NotificationNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarLabel: "Aktivitas",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "newspaper" : "newspaper-outline"}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Notification"
+        component={NotificationScreen}
+        options={{
+          tabBarLabel: "Notifikasi",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "notifications" : "notifications-outline"}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Account"
+        component={AccountScreen}
+        options={{
+          tabBarLabel: "Akun",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "person" : "person-outline"}
+              color={color}
+            />
+          ),
         }}
       />
     </BottomTab.Navigator>
   );
 }
 
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
-function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+function TabBarIcon(props: {
+  name: React.ComponentProps<typeof Ionicons>["name"];
+  color: string;
+}) {
+  return <Ionicons size={20} style={{ marginBottom: -5 }} {...props} />;
 }
 
-// Each tab has its own navigation stack, you can read more about this pattern here:
-// https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
+const HomeStack = createStackNavigator<HomeParamList>();
 
-function TabOneNavigator() {
+function HomeNavigator() {
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
       />
-    </TabOneStack.Navigator>
+      <HomeStack.Screen
+        name="Sameday"
+        component={ServicesSameday}
+        options={{ headerShown: false }}
+      ></HomeStack.Screen>
+      <HomeStack.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{ headerShown: false }}
+      ></HomeStack.Screen>
+    </HomeStack.Navigator>
   );
 }
 
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
+const ActivityStack = createStackNavigator<ActivityParamList>();
 
-function TabTwoNavigator() {
+function NotificationNavigator() {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+    <ActivityStack.Navigator>
+      <ActivityStack.Screen
+        name="Activity"
+        component={ActivityScreen}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "left",
+          headerTitle: "Aktivitas",
+          headerStyle: {
+            elevation: 0,
+          },
+        }}
       />
-    </TabTwoStack.Navigator>
+    </ActivityStack.Navigator>
   );
 }

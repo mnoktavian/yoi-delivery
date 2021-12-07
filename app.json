@@ -1,5 +1,6 @@
 {
   "expo": {
+    "owner": "mnoktavian",
     "name": "yoi-delivery",
     "slug": "yoi-delivery",
     "version": "1.0.0",
@@ -25,6 +26,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.mnoktavian.yoidelivery",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDT7o2DaswwlFn09ZscNgklwl2KuGvV8Vc"
+        }
       }
     },
     "web": {
